@@ -5,7 +5,11 @@ const timezone = require('mongoose-timezone');
 
 // recipe schema
 const recipeSchema = new Schema({
-    // put creator here later
+    creator: {
+        type: Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -24,6 +28,24 @@ const recipeSchema = new Schema({
             amount: { type: Number, required: true },
         }
     ],
+    picVersion: {
+        type: String,
+        default: ''
+    },
+    picId: {
+        type: String,
+        default: ''
+    },
+    image: {
+        imgId: {
+            type: String,
+            default: ''
+        },
+        imgVersion: {
+            type: String,
+            default: ''
+        }
+    },
     createdAt: {
         type: Date,
         default: moment.tz(Date.now(), 'Australia/Sydney')

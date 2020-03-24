@@ -2,12 +2,32 @@
 // need to create and declare recipe model
 const moment = require('moment-timezone');
 const Recipe = require('../models/recipe');
+const jwt = require('jsonwebtoken');
+
+verifyToken = (token, key) => {
+    try {
+        return jwt.verify(token, key);
+    } catch (e) {
+        return null;
+    }
+}
 
 exports.saveRecipes = async(req, res, next) => {
     try {
 
+        token = req.headers.token;
+
+        // verify token
+        let decodedToken = verifyToken(token, process.env.SECRET_KEY);
+
+        if(decodedToken === null) {
+            res.status(500).json({
+                message: 'invalid token'
+            });
+        }
+
         // delete all records
-        await Recipe.deleteMany({});
+        await Recipe.deleteMany({ creator: decodedToken.userId });
 
         // grab each recipe from the body
         let recipe;
@@ -17,6 +37,7 @@ exports.saveRecipes = async(req, res, next) => {
 
             // create new recipe records
             recipe = new Recipe({
+                creator: decodedToken.userId,
                 name: req.body[x].name,
                 description: req.body[x].description,
                 imagePath: req.body[x].imagePath,
@@ -44,11 +65,20 @@ exports.saveRecipes = async(req, res, next) => {
 exports.getRecipes = async(req, res, next) => {
     try {
 
-        // fetch token from header
-        // console.log(req.headers.token);
+        //get token
+        token = req.headers.token;
 
-        // get all recipes
-        let recipes = await Recipe.find({});
+        // verify token
+        let decodedToken = verifyToken(token, process.env.SECRET_KEY);
+
+        if(decodedToken === null) {
+            res.status(500).json({
+                message: 'invalid token'
+            });
+        }
+
+        // get all recipes belonging to user
+        let recipes = await Recipe.find({ creator: decodedToken.userId });
 
         // return recipes
         res.status(200).json({
