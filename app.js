@@ -6,6 +6,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+
 
 // spin up server
 const server = require('http').createServer(app);
@@ -13,6 +16,12 @@ const server = require('http').createServer(app);
 // routes
 const authRoutes = require('./routes/auth');
 const recipeRoutes = require('./routes/recipe');
+
+// extra headers
+app.use(helmet());
+
+// file compression
+app.use(compression());
 
 // port
 const PORT = process.env.PORT || 8080;
