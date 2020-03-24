@@ -1,0 +1,13 @@
+{
+    "env": {
+        "MONGO_USER": "ram",
+        "MONGO_PASSWORD": "lMEFmOYQFS1kL5ou",
+        "MONGO_ATLAS_SERVER": "chatmania-fowek.mongodb.net",
+        "MONGO_DEFAULT_DATABASE": "recipes",
+        "PORT": 8080,
+        "SECRET_KEY": "somesupersupersecretkey",
+        "CLOUDINARY_CLOUD_NAME":"ds3tyyeol",
+        "CLOUDINARY_API_KEY":"946138294454987",
+        "CLOUDINARY_API_SECRET":"DAD4WenEirIJOSqzPZL8V58szmI"
+    }
+}
